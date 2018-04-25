@@ -8,7 +8,7 @@ This module enables ViPER4Android XHiFi. [More details in support thread](https:
 
 ## Change Log
 ### v1.0 - 4.xx.2018
-* Initial rerelease
+* Initial release
 
 ## Credits
 * [ViPER's Audio](http://vipersaudio.com/blog/)
