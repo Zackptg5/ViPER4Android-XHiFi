@@ -47,6 +47,7 @@ for REMNANT in $(find /data -name "*ViPER4AndroidFX*" -o -name "*com.vipercn.vip
   fi
 done
 
+# Detect driver compatibility
 ui_print " "
 ABIVER=$(echo $ABILONG | sed -r 's/.*-v([0-9]*).*/\1/')
 [ -z $ABIVER ] && ABIVER=0
