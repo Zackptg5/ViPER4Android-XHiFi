@@ -8,7 +8,7 @@ This module enables ViPER4Android XHiFi. [More details in support thread](https:
 
 ## Change Log
 ### v1.2.5 - 12.6.2018
-* Add usb audio fix
+* Add usb audio fix - thanks to donjoe0 @xda-developers
 
 ### v1.2.4 - 10.23.2018
 * Unity v1.7.2 update
