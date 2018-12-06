@@ -55,8 +55,10 @@ unity_custom() {
   if $MAGISK && $BOOTMODE; then ORIGDIR="/sbin/.core/mirror"; else ORIGDIR=""; fi
   if $BOOTMODE; then
     CFGS="$(find /system /vendor -type f -name "*audio_effects*.conf" -o -name "*audio_effects*.xml")"
+    UPCS="$(find /system /vendor -type f -name "usb_audio_policy_configuration.xml")"
   else
     CFGS="$(find -L /system -type f -name "*audio_effects*.conf" -o -name "*audio_effects*.xml")"
+    UPCS="$(find -L /system -type f -name "usb_audio_policy_configuration.xml")"
   fi
 }
 
