@@ -7,6 +7,10 @@ This module enables ViPER4Android XHiFi. [More details in support thread](https:
 * All root solutions (requires init.d support if not using magisk or supersu. Try [Init.d Injector](https://forum.xda-developers.com/android/software-hacking/mod-universal-init-d-injector-wip-t3692105))
 
 ## Change Log
+### v1.2.6 - 12.8.2018
+* Unity v1.8 update
+* Fixed limitation in zipname triggers - you can use spaces in the zipname now and trigger is case insensitive
+
 ### v1.2.5 - 12.6.2018
 * Add usb audio fix - thanks to donjoe0 @xda-developers
 

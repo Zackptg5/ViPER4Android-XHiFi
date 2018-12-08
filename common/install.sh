@@ -117,6 +117,7 @@ else
   cp -f $INSTALLER/custom/libv4a_xhifi_jb_$DRV.so $INSTALLER/system/lib/soundfx/libv4a_xhifi_ics.so
   sed -ri "s/version=(.*)/version=\1 (2.1.0.2-1)/" $INSTALLER/module.prop
 fi
+sed -i "s/<SOURCE>/$SOURCE/g" $INSTALLER/common/sepolicy.sh
 
 ui_print " "
 if [ "$UPCS" ]; then
