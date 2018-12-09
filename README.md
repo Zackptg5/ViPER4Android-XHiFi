@@ -10,6 +10,7 @@ This module enables ViPER4Android XHiFi. [More details in support thread](https:
 ### v1.2.6 - 12.9.2018
 * Unity v1.8.1 update
 * Fixed limitation in zipname triggers - you can use spaces in the zipname now and trigger is case insensitive
+* Fixed old boot script bug
 
 ### v1.2.5 - 12.6.2018
 * Add usb audio fix - thanks to donjoe0 @xda-developers
