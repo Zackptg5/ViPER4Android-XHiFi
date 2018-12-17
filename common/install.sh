@@ -86,37 +86,15 @@ done
 
 # Detect driver compatibility
 ui_print " "
-ABIVER=$(echo $ABILONG | sed -r 's/.*-v([0-9]*).*/\1/')
-[ -z $ABIVER ] && ABIVER=0
-CPUFEAT=$(cat /proc/cpuinfo | grep 'Features')
-if [ $ABIVER -ge 7 ] || [ "$(echo $CPUFEAT | grep 'neon')" ]; then
-  ui_print "   Neon Device detected!"
-  DRV=NEON
-elif [ "$(echo $CPUFEAT | grep 'vfp')" ]; then
-  ui_print "   Non-neon VFP Device detected!"
-  DRV=VFP
-elif [ $API -le 13 ] && [ "$(echo $CPUFEAT | grep 'T2')" ]; then
-  ui_print "   Non-Neon, Non-VFP, T2 Device detected!"
-  DRV=T2
-else
-  ui_print "   Non-Neon, Non-VFP Device detected!"
-  DRV=NOVFP
-fi
+case $(cat /proc/cpuinfo | grep 'Features' | tr '[:upper:]' '[:lower:]') in
+  *"neon"*) ui_print "   Neon Device detected!"; DRV=NEON;;
+  *"vfp"*) ui_print "   Non-neon VFP Device detected!"; DRV=VFP;;
+  *) ui_print "   Non-Neon, Non-VFP Device detected!"; DRV=NOVFP;;
+esac
 
-PATCH=true
 mkdir -p $INSTALLER/system/lib/soundfx
-if [ $API -le 13 ]; then
-  [ $API -le 10 ] && PATCH=false
-  cp -f $INSTALLER/custom/ViPER4AndroidXHiFi.apk $INSTALLER/system/app/ViPER4AndroidXHiFi/ViPER4AndroidXHiFi.apk
-  cp -f $INSTALLER/custom/libv4a_xhifi_gb_$DRV.so $INSTALLER/system/lib/soundfx/libv4a_xhifi_gb.so
-  sed -ri "s/version=(.*)/version=\1 (2.1.0.2)/" $INSTALLER/module.prop
-elif [ $API -le 15 ]; then
-  cp -f $INSTALLER/custom/libv4a_xhifi_ics_$DRV.so $INSTALLER/system/lib/soundfx/libv4a_xhifi_ics.so
-  sed -ri "s/version=(.*)/version=\1 (2.1.0.2-1)/" $INSTALLER/module.prop
-else
-  cp -f $INSTALLER/custom/libv4a_xhifi_jb_$DRV.so $INSTALLER/system/lib/soundfx/libv4a_xhifi_ics.so
-  sed -ri "s/version=(.*)/version=\1 (2.1.0.2-1)/" $INSTALLER/module.prop
-fi
+cp -f $INSTALLER/custom/libv4a_xhifi_jb_$DRV.so $INSTALLER/system/lib/soundfx/libv4a_xhifi_ics.so
+sed -ri "s/version=(.*)/version=\1 (2.1.0.2-1)/" $INSTALLER/module.prop
 sed -i "s/<SOURCE>/$SOURCE/g" $INSTALLER/common/sepolicy.sh
 
 ui_print " "
@@ -143,21 +121,19 @@ else
   done
 fi
 
-if $PATCH; then
-  ui_print "   Patching existing audio_effects files..."
-  for OFILE in ${CFGS}; do
-    FILE="$UNITY$(echo $OFILE | sed "s|^/vendor|/system/vendor|g")"
-    cp_ch -nn $ORIGDIR$OFILE $FILE
-    osp_detect $FILE
-    case $FILE in
-      *.conf) sed -i "/v4a_standard_xhifi {/,/}/d" $FILE
-              sed -i "/v4a_xhifi {/,/}/d" $FILE
-              sed -i "s/^effects {/effects {\n  v4a_standard_xhifi { #$MODID\n    library v4a_xhifi\n    uuid d92c3a90-3e26-11e2-a25f-0800200c9a66\n  } #$MODID/g" $FILE
-              sed -i "s/^libraries {/libraries {\n  v4a_xhifi { #$MODID\n    path $LIBPATCH\/lib\/soundfx\/libv4a_xhifi_ics.so\n  } #$MODID/g" $FILE;;
-      *.xml) sed -i "/v4a_standard_xhifi/d" $FILE
-             sed -i "/v4a_xhifi/d" $FILE
-             sed -i "/<libraries>/ a\        <library name=\"v4a_xhifi\" path=\"libv4a_xhifi_ics.so\"\/><!--$MODID-->" $FILE
-             sed -i "/<effects>/ a\        <effect name=\"v4a_standard_xhifi\" library=\"v4a_xhifi\" uuid=\"d92c3a90-3e26-11e2-a25f-0800200c9a66\"\/><!--$MODID-->" $FILE;;
-    esac
-  done
-fi
+ui_print "   Patching existing audio_effects files..."
+for OFILE in ${CFGS}; do
+  FILE="$UNITY$(echo $OFILE | sed "s|^/vendor|/system/vendor|g")"
+  cp_ch -nn $ORIGDIR$OFILE $FILE
+  osp_detect $FILE
+  case $FILE in
+    *.conf) sed -i "/v4a_standard_xhifi {/,/}/d" $FILE
+            sed -i "/v4a_xhifi {/,/}/d" $FILE
+            sed -i "s/^effects {/effects {\n  v4a_standard_xhifi { #$MODID\n    library v4a_xhifi\n    uuid d92c3a90-3e26-11e2-a25f-0800200c9a66\n  } #$MODID/g" $FILE
+            sed -i "s/^libraries {/libraries {\n  v4a_xhifi { #$MODID\n    path $LIBPATCH\/lib\/soundfx\/libv4a_xhifi_ics.so\n  } #$MODID/g" $FILE;;
+    *.xml) sed -i "/v4a_standard_xhifi/d" $FILE
+           sed -i "/v4a_xhifi/d" $FILE
+           sed -i "/<libraries>/ a\        <library name=\"v4a_xhifi\" path=\"libv4a_xhifi_ics.so\"\/><!--$MODID-->" $FILE
+           sed -i "/<effects>/ a\        <effect name=\"v4a_standard_xhifi\" library=\"v4a_xhifi\" uuid=\"d92c3a90-3e26-11e2-a25f-0800200c9a66\"\/><!--$MODID-->" $FILE;;
+  esac
+done
