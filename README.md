@@ -7,6 +7,9 @@ This module enables ViPER4Android XHiFi. [More details in support thread](https:
 * All root solutions (requires init.d support if not using magisk or supersu. Try [Init.d Injector](https://forum.xda-developers.com/android/software-hacking/mod-universal-init-d-injector-wip-t3692105))
 
 ## Change Log
+### vx.x.x - x.x.2019
+* Fix boot script once and for all
+
 ### v1.4.7 - 2.8.2019
 * Unity v3.3 update - minapi is now 17
 
