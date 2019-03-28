@@ -1,4 +1,4 @@
-if ! $MAGISK || $SYSOVERRIDE; then
+if ! $MAGISK || $SYSOVER; then
   for OFILE in ${CFGS}; do
     FILE="$UNITY$(echo $OFILE | sed "s|^/vendor|/system/vendor|g")"
     case $FILE in

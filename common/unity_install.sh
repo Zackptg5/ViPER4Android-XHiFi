@@ -14,8 +14,8 @@ osp_detect() {
 }
 
 # Tell user aml is needed if applicable
-if $MAGISK && ! $SYSOVERRIDE; then
-  if $BOOTMODE; then LOC="$MAGISKTMP/img/*/system $MOUNTPATH/*/system"; else LOC="$MOUNTPATH/*/system"; fi
+if $MAGISK && ! $SYSOVER; then
+  if $BOOTMODE; then LOC="$MOUNTEDROOT/*/system $MODULEROOT/*/system"; else LOC="$MODULEROOT/*/system"; fi
   FILES=$(find $LOC -type f -name "*audio_effects*.conf" -o -name "*audio_effects*.xml" 2>/dev/null)
   if [ ! -z "$FILES" ] && [ ! "$(echo $FILES | grep '/aml/')" ]; then
     ui_print " "
@@ -55,10 +55,10 @@ case $(cat /proc/cpuinfo | grep 'Features' | tr '[:upper:]' '[:lower:]') in
   *) ui_print "   Non-Neon, Non-VFP Device detected!"; DRV=NOVFP;;
 esac
 
-mkdir -p $INSTALLER/system/lib/soundfx
-cp -f $INSTALLER/custom/libv4a_xhifi_jb_$DRV.so $INSTALLER/system/lib/soundfx/libv4a_xhifi_ics.so
-sed -ri "s/version=(.*)/version=\1 (2.1.0.2-1)/" $INSTALLER/module.prop
-sed -i "s/<SOURCE>/$SOURCE/g" $INSTALLER/common/sepolicy.sh
+mkdir -p $TMPDIR/system/lib/soundfx
+cp -f $TMPDIR/custom/libv4a_xhifi_jb_$DRV.so $TMPDIR/system/lib/soundfx/libv4a_xhifi_ics.so
+sed -ri "s/version=(.*)/version=\1 (2.1.0.2-1)/" $TMPDIR/module.prop
+sed -i "s/<SOURCE>/$SOURCE/g" $TMPDIR/common/sepolicy.sh
 
 ui_print "   Patching existing audio_effects files..."
 for OFILE in ${CFGS}; do
