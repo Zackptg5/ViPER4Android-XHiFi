@@ -1,3 +1,6 @@
+# Deprecated
+I won't be doing anymore work on this - Use the new [V4A app instead](https://forum.xda-developers.com/android/apps-games/app-viper4android-fx-2-6-0-0-t3774651). Magisk module is [here](https://github.com/Zackptg5/ViPER4Android-FX)
+
 # ViPER4Android XHiFi
 This module enables ViPER4Android XHiFi. [More details in support thread](https://forum.xda-developers.com/apps/magisk/module-viper4android-fx-2-5-0-5-t3577058).
 
